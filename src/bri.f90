@@ -31,7 +31,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
   PHIH = 0
   X1 = 0
 
-  IF ( YCOUNT .LE. 0 .AND. IFIRST .EQ. 0 ) THEN
+  IF ( YCOUNT <= 0 .AND. IFIRST == 0 ) THEN
 
 !       MOL = 10E5
     TSTAR = 0
@@ -39,7 +39,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
     T1 = TSCREN
     IFIRST = 1
       
-  elseif (ycount .ge. 1 .and. ifirst .eq. 1) then
+  elseif (ycount >= 1 .and. ifirst == 1) then
        
 ! Start the surface temp at some nominal value.
        
@@ -82,7 +82,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
 ! **  the appropriate physics.
 
 !  write(*,*) 'TDIF: ',TDIF,' BULK: ',BULK
-  IF ( TDIF .LT. 0.05 ) THEN
+  IF ( TDIF < 0.05 ) THEN
 
 !     .... Soln Sequence Neutral ....
 
@@ -92,7 +92,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
     HEAT = - KARMAN * DENS * CP * USTAR * TSTAR
     UTEN =  USTAR / KARMAN * ( ALOG( ZTEN / ZO))
 
-  ELSE IF (BULK .LT. 0) THEN
+  ELSE IF (BULK < 0) THEN
 
 !      .... Soln Sequence Unstable ....
 
@@ -114,7 +114,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
     HEAT = -KARMAN * DENS * CP * USTAR * TSTAR
     UTEN   = USTAR / KARMAN * ( ALOG( ZTEN / ZO))
 
-  ELSE IF ( BULK .GT. 0 .AND. BULK .LT. CR1 ) THEN
+  ELSE IF ( BULK > 0 .AND. BULK < CR1 ) THEN
 
 !      .... Soln Sequence Stable Turbulent ....
 
@@ -167,7 +167,7 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
 
   end if
 
-  IF ( USTAR .LT. 0.01 ) USTAR = 0.01
+  IF ( USTAR < 0.01 ) USTAR = 0.01
 
   T2 = T1 + DT * ( RADCOR + ADVGT - B * HEAT / (CP * DENS * Z1))
   T1 = ( T1 + T2 )/ 2.0
@@ -178,12 +178,12 @@ subroutine  BRI (T1,MONCE,PSIHNEW,YCOUNT,ZTEN)
 
   X1 = X1 + 1
   XMOD = MOD ( X1 , 2.0 )
-  IF( XMOD .NE. 0 ) GO TO 11
+  IF( XMOD /= 0 ) GO TO 11
 
 ! **  Call MOM to calculate the night-time vertical profiles of
 ! **  temperature and winds.
 
-  if ( YCOUNT .GE. 1 ) then
+  if ( YCOUNT >= 1 ) then
 
     CALL MOM (Pot_S, DT, MONCE)
 

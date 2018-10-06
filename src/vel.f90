@@ -36,8 +36,8 @@ subroutine VEL (MONCE,IONCE,StabCriteria,YCOUNT,Obst_Hgt,dual_regime,zo_patch)
 !  HEAT = 0.  Therefore calc surface wind profile and resistances for
 !  the surface layer on the basis log wind profile law.
 
-  IF (StabCriteria .eq. 0 .or. (StabCriteria .eq. 1 .and.               &
-     Heat .le. 0.0 )) THEN ! Neutral Profile (Rare)
+  IF (StabCriteria == 0 .or. (StabCriteria == 1 .and.               &
+     Heat < 0.0 )) THEN ! Neutral Profile (Rare)
            
 !         ^ Allow for negative heat flux 
        
@@ -69,10 +69,10 @@ subroutine VEL (MONCE,IONCE,StabCriteria,YCOUNT,Obst_Hgt,dual_regime,zo_patch)
 !  wind profiles for momentum and heat (FM,FT) to determine the
 !  resistance term over the surface layer.
 
-  else if ( StabCriteria .eq. 1 .and. heat .gt. 0) then ! Unstable
-    IF (EVAP .LT. 0.000001) EVAP = 0.000001
+  else if ( StabCriteria == 1 .and. heat > 0) then ! Unstable
+    IF (EVAP < 0.000001) EVAP = 0.000001
     BOWEN = HEAT / EVAP
-    IF ( ABS( BOWEN ) .GT. 10 ) BOWEN = 10 * BOWEN / ABS ( BOWEN )
+    IF ( ABS( BOWEN ) > 10 ) BOWEN = 10 * BOWEN / ABS ( BOWEN )
     MOL =  - ( ( USTAR**3 ) * aptemp * CP * DENS ) /                    &     
            ( KARMAN * GRAV * HEAT * ( 1 + 0.07 / ( ABS ( BOWEN ) ) ) )
 
@@ -154,14 +154,14 @@ subroutine VEL (MONCE,IONCE,StabCriteria,YCOUNT,Obst_Hgt,dual_regime,zo_patch)
 
 !  Set USTAR equal to some non-zero value if small.
 
-  IF ( USTAR .LT. 0.01 ) USTAR = 0.01
+  IF ( USTAR < 0.01 ) USTAR = 0.01
 
 !  Calc the diffusivities and resistances to heat and water for
 !  the transition layer.  KS & KW are the molecular conductivities
 !  for heat and water.  CMH and CMW are the scaling factors .. see
 !  manual.
 
-  IF (IONCE .EQ. 0) THEN
+  IF (IONCE == 0) THEN
     KMM = CMH * KS / ( DENS * CP )
     KX =  CMW * KW / ( DENS * CP )
   END IF
@@ -176,7 +176,7 @@ subroutine VEL (MONCE,IONCE,StabCriteria,YCOUNT,Obst_Hgt,dual_regime,zo_patch)
   SUMW = RZAZO + RTRANW
   sumo3 = rzazo + rtrano3
 
-  If( dual_regime) then 
+  If (dual_regime) then 
     Rtrans_Patch = ResTrn (ustar_patch,ZO,KMM,KARMAN)
     RtransW_Patch = ResTrn (ustar_patch,ZO,KX,KARMAN)
 
@@ -186,7 +186,7 @@ subroutine VEL (MONCE,IONCE,StabCriteria,YCOUNT,Obst_Hgt,dual_regime,zo_patch)
 
 !  If vegetation included, call vegetation component.
 
-  IF (SWAVE .GT. 0 .AND. RNET .GT. 0 .AND. FRVEG .GT. 0) THEN
+  IF (SWAVE > 0 .AND. RNET > 0 .AND. FRVEG > 0) THEN
     CALL VEGVEL
   END IF
 

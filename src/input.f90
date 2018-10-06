@@ -33,11 +33,11 @@ subroutine INPUT
 ! **  Y ...Counter for determining celestial mechanics for long, lat and
 ! **  time of year.
 
-  IF ( Y .NE. 1 ) GO TO 19
+  IF ( Y /= 1 ) GO TO 19
   Y = Y + 1
 
   IMO1 = IMO + 1
-  IF (IMO1 .EQ. 13) IMO1 = 1
+  IF (IMO1 == 13) IMO1 = 1
 
 ! **  Compute the solar distance factor.
 
@@ -48,13 +48,13 @@ subroutine INPUT
 
   K = IDAY
   JMO = IMO - 1
-  IF ( JMO .LT. 1 ) GO TO 12
+  IF ( JMO < 1 ) GO TO 12
   do I = 1 , JMO
     K = K + MD(I)
   end do
 12  N = IYR / 4
   N = IYR - N * 4
-  IF (N .NE. 0 .AND. K .GE. 60) K = K - 1
+  IF (N /= 0 .AND. K >= 60) K = K - 1
   DAD = K - 1
 
 ! **  Calculate the angular fraction of a year, convert to radians.
@@ -95,7 +95,7 @@ subroutine INPUT
   SOLSIN = SIN(EFFDEC)*SIN(SLB)+COS(EFFDEC)*COS(SLB)*COS(HRANGL)
   SOLEL = real(ASIN( SOLSIN ) * RADIAN,4)
 
-  if (SLOPE .GT. 0) then
+  if (SLOPE > 0) then
     call sslope (sinsolelslope,solelslope,effdec,slb,hrangl)
   else
     call albedo (solsin)
@@ -105,7 +105,7 @@ subroutine INPUT
 !  If the solar altitude is less that or equal to zero it's night so
 !  return, otherwise compute absolute optical air mass (PATH).
 
-  IF ( SOLEL .LE. 0 ) THEN
+  IF ( SOLEL <= 0 ) THEN
     SWAVE = 0
     RETURN
   END IF

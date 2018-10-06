@@ -38,7 +38,7 @@ subroutine  START (Obst_Hgt)
 
   READ (9,*) F, FSUB, WMAX, BTEMP, TP, DUAL_TI, TI_A, TI_B,             &
              ALBEDO_GFLAG, ALBG, EPSI, index_soils
-  cloud_flag=(1.eq.1)
+  cloud_flag=(1 == 1)
 
   READ (9,*) OMEGA, ZO, OBST_HGT, cloud_flag, cld_fract
 

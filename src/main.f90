@@ -72,19 +72,19 @@ program simsphere
 ! Mixed Layer
 
 !  write(*,*) 'HEAT: ',HEAT,' SWAVE: ',SWAVE,' RNET: ',RNET
-  IF (HEAT.GT.0.00001 .AND. SWAVE .GT. 0 .AND. RNET .GT. 0) THEN
+  IF (HEAT > 0.00001 .AND. SWAVE > 0 .AND. RNET > 0) THEN
     CALL AIR (ZLS, YCOUNT)
   END IF
 
 ! Eddy Diffusivities in the Mixed Layer
 
-  IF (HEAT.GT.0.00001 .AND. SWAVE .GT. 0 .AND. RNET .GT. 0) THEN
+  IF (HEAT > 0.00001 .AND. SWAVE > 0 .AND. RNET > 0) THEN
     CALL DAYKM
   END IF
 
 ! Momentum Equations - Mixed Layer
 
-  IF (HEAT.GT.0.00001 .AND. SWAVE .GT. 0 .AND. RNET .GT. 0) THEN
+  IF (HEAT > 0.00001 .AND. SWAVE > 0 .AND. RNET > 0) THEN
     CALL MOMDAY
   END IF
 
@@ -94,12 +94,12 @@ program simsphere
 
 ! Heat FLux - Penman Formulation
 
-  IF((HEAT.GE.0 .or. RNET .GT.0).AND.SWAVE .GT.0) THEN
+  IF((HEAT >= 0 .or. RNET > 0).AND. SWAVE > 0) THEN
     CALL HOT (B,BareNetRadn,BareEvapFlux,BareHeatFlux)
   END IF
   
 !
-  if (rnet .gt. 0)then
+  if (rnet > 0)then
     StabCriteria = 1
   else
     StabCriteria = 2
@@ -112,14 +112,14 @@ program simsphere
 !  Output is written every OUTTT seconds.
 
 
-  IF (TMOD.EQ.0.) CALL output(No_Rows)
+  IF (TMOD == 0.) CALL output(No_Rows)
 
 ! Increment Time.
 
   TIME = TIME + DELTA
 
 
-  IF (REALTM .LT. timend) GO TO 5
+  IF (REALTM < timend) GO TO 5
 
   ENDFILE (UNIT = 11)  ! Close the output file
   CLOSE (UNIT = 11)

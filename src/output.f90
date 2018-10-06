@@ -21,9 +21,9 @@ subroutine  OUTPUT(No_Rows)
 
   G_Flux = Rnet - Heat - Evap
   Bowen = Heat/Evap
-  If (Bowen .lt. 0.0) Bowen = undefined
+  If (Bowen < 0.0) Bowen = undefined
 
-  If (FRVEG .ne. 0.0) then
+  If (FRVEG /= 0.0) then
     air_leaf_T = TAF - 273.23
 !ground_T = TG - 273.23
   else
@@ -40,7 +40,7 @@ subroutine  OUTPUT(No_Rows)
   Water_Use_Eff = (co2_flux*4.4e-8)/(xlef/le)
 
 
-  if (I_Header .eq. 1) then
+  if (I_Header == 1) then
 
     I_Columns = 30
     write (11, 4) I_Columns, No_Rows
@@ -73,7 +73,7 @@ subroutine  OUTPUT(No_Rows)
 
 ! Default data file (Primy.dat)
 
-  IF (RNET .LE. 0 .OR. SWAVE .LE. 0) THEN
+  IF (RNET < 0 .OR. SWAVE <= 0) THEN
 
 ! Night
 ! No Vegetation Response
@@ -89,7 +89,7 @@ subroutine  OUTPUT(No_Rows)
 
 ! Day
 
-    If (heat .gt. 0) then
+    If (heat > 0) then
       WRITE (11,10) PTIME,SWAVE,RNET,HEAT,EVAP,G_Flux,                  &
                     atemp-273.23,ta-273.23,air_leaf_T,OTEMP-273.23,     &
                     awind*1.98, uten*1.98, uaf*1.98,                    &

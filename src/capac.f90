@@ -26,7 +26,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 ! **  function of psig. If not, it is a function of xcap or
 ! **  relative water content
 
-  IF ( JCAP .EQ. 1 ) THEN
+  IF ( JCAP == 1 ) THEN
 
     NCAP = RCCAP
     IDEL = 0
@@ -37,15 +37,15 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
     CAPINI = VOLINI / RKOCAP
     JCAP = 2
 
-    IF ( IXCAP .EQ. 0 ) THEN
+    IF ( IXCAP == 0 ) THEN
 
-       IF ( NCAP .EQ. 1 ) THEN
+       IF ( NCAP == 1 ) THEN
          VOLIST = VOLINI * EXP ( CAPINI * (PSIG - FRHGT * H)            &
                   / VOLINI )
 
          CAPACI = CAPINI * ( VOLIST ) / VOLINI
 
-       ELSE IF ( NCAP .NE. 1 ) THEN
+       ELSE IF ( NCAP /= 1 ) THEN
 
          CAPRAT =  (RCCAP - 1)/ RCCAP
          VOLIST = VOLINI * ( 1 + CAPINI * (PSIG - FRHGT * H)            &
@@ -59,7 +59,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 ! ** It is possible that the volist will be calculated as being
 ! ** less than zero.  This is impossible.  Therefore, we set:
 
-     IF ( VOLIST .LT. 0 ) THEN
+     IF ( VOLIST < 0 ) THEN
 
        VOLIST = .00001*VOLINI
        VOLRMV = .99999*VOLINI
@@ -71,11 +71,11 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
      VOLIST = VOLREL * VOLINI
      VOLISO = VOLIST
 
-     IF ( NCAP .EQ. 1 ) THEN
+     IF ( NCAP == 1 ) THEN
 
        CAPACI = CAPINI * VOLREL
 
-     ELSE IF ( NCAP .NE. 1 ) THEN
+     ELSE IF ( NCAP /= 1 ) THEN
 
        CAPRAT =  (RCCAP - 1)/ RCCAP
        CAPACI = CAPINI * ( VOLREL ) ** ( 1 / RCCAP )
@@ -88,7 +88,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 
  VOLREL = VOLIST / VOLINI
 
- IF ( NCAP .EQ. 1 ) THEN
+ IF ( NCAP == 1 ) THEN
 
     PSIST = ( VOLINI / CAPINI ) * LOG ( VOLREL )
     CAPACI = CAPINI * ( VOLIST ) / VOLINI
@@ -99,7 +99,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 
 ! **  THIS IF STATEMENT IS IN PLACE OF VOLUME CONSTRAINTS
 
-    IF ( PSIST .GE. 0 ) THEN
+    IF ( PSIST > 0 ) THEN
       PSIST = 0
     END IF
 
@@ -110,7 +110,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 ! **   The next statement prevents psist from becoming more
 ! positive then psig
 
-    IF ( ITRAP .EQ. 1 .AND. DELTVST .EQ. 0 ) THEN
+    IF ( ITRAP == 1 .AND. DELTVST == 0 ) THEN
       PSIST = PSIX
     END IF
 
@@ -118,25 +118,25 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 
   END IF
 
-  IF ( NCAP .EQ. 1 ) THEN
+  IF ( NCAP == 1 ) THEN
     ZST = ZSTINI / VOLREL
-  ELSE IF ( NCAP .NE. 1 ) THEN
+  ELSE IF ( NCAP /= 1 ) THEN
     ZST = ZSTINI * ( 1./VOLREL ) ** ( RZCAP )
   END IF
 
 ! **  The following if statement prevents zst from becoming very
 !**   large.
 
-  IF ( ZST .GT. 1E3 ) THEN
+  IF ( ZST > 1E3 ) THEN
     ZST = 1E3
   END IF
 
 ! **  The following if statements prevent psist from exceeding
 ! **  psix during a time interval
 
-  IF ( DELTVST .LT. 0 .AND. PSIST .LT. PSIX ) THEN
+  IF ( DELTVST < 0 .AND. PSIST < PSIX ) THEN
     PSIST = PSIX
-  ELSE IF ( DELTVST .GT. 0 .AND. PSIST .GT. PSIX ) THEN
+  ELSE IF ( DELTVST > 0 .AND. PSIST > PSIX ) THEN
     PSIST = PSIX
   END IF
 
@@ -158,7 +158,7 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
   PSIWC =  SGMA * VFL * ZUH / RSTDIV + PSICE + beta * vfl2 + FPM * H
   PSISUP = PSIX
 
-  IF ( PSISUP .GT. PSIWC ) THEN
+  IF ( PSISUP > PSIWC ) THEN
     AROOT = FS * FT * b1_p * (RCUT + Unscaled_RAF) * ( ZST * (-1) - ZADD )
 
     BROOT = FS * FT * (RCUT + Unscaled_RAF) * ( RMIN *                  &
@@ -221,8 +221,8 @@ subroutine Capac (Unscaled_RAF,H,B1_P,B2_P,vfl2, sgma)
 ! **   the following if statements prevent the volume in
 ! **   storage from becoming negative.
 
-  IF ( VOLRMV .GT. VOLINI .AND. DELTVST .LE. 0 ) THEN
-    IF ( IDEL .EQ. 0 ) THEN
+  IF ( VOLRMV > VOLINI .AND. DELTVST < 0 ) THEN
+    IF ( IDEL == 0 ) THEN
       DELTVST = (VOLINI - VOLRMO)
       IDEL = 1
     ELSE

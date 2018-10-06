@@ -42,7 +42,7 @@ subroutine GTEMP
     DELTAX = B / C
     X = X - DELTAX
     XDIF = X - OTEMP
-    IF ( ABS(XDIF) .LT. .0001 ) GO TO 31
+    IF ( ABS(XDIF) < .0001 ) GO TO 31
   end do
 
 31 X = ( OTEMP + X ) / 2

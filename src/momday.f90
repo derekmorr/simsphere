@@ -30,7 +30,7 @@ subroutine  MOMDAY
 ! **  mixing layer is below 60m.
 
   SMF = THICK / SMFH
-  IF ( SMF .GT. 1 ) SMF = 1
+  IF ( SMF > 1 ) SMF = 1
 
   AWIND = SQRT ( VD(1)**2 + UD(1)**2 )
 
@@ -43,7 +43,7 @@ subroutine  MOMDAY
 
 ! **  Check for the existance of a mixing layer.
 
-666   IF ( THICK .EQ. 0 ) THEN
+666   IF ( THICK == 0 ) THEN
 
 ! **  Calc the partial derivatives of U and V with respect to time
 ! **  when there is no mixing layer.  Initialise specific humidities.
@@ -86,9 +86,9 @@ subroutine  MOMDAY
 !  TD(I) = TD(I) - (RAD - ADVGT ) * (DELTA/2)
 ! ENDIF
 
-     IF ( ZI(I) .GT. HGT ) GO TO 40
+     IF ( ZI(I) > HGT ) GO TO 40
 
-     IF ( ZI(I) .EQ. ZI(NTRP) ) THEN
+     IF ( ZI(I) == ZI(NTRP) ) THEN
        KM(I+1) = 0
        UD(I+1) = UD(I)
        VD(I+1) = VD(I)
@@ -147,7 +147,7 @@ subroutine  MOMDAY
 
   XXX = XXX + 1
   OVER = MOD( XXX , 2.0)
-  IF ( OVER .NE. 0 ) GO TO 666
+  IF ( OVER /= 0 ) GO TO 666
 
 999   continue
 
